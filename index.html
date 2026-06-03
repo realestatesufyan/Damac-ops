@@ -15,65 +15,79 @@
   --hot:#ff6b4a;--hotd:rgba(255,107,74,.1);
   --warm:#f5a623;--warmd:rgba(245,166,35,.1);
   --cold:#4a9eff;--coldd:rgba(74,158,255,.1);
+  --overdue:#ff4a6b;--overdued:rgba(255,74,107,.1);
   --r:6px;
 }
 html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif;background:var(--bg);color:var(--t1);font-size:13px}
 ::-webkit-scrollbar{width:3px}::-webkit-scrollbar-thumb{background:var(--b2);border-radius:2px}
 
-/* NAV */
-nav{height:46px;background:var(--s1);border-bottom:1px solid var(--b1);display:flex;align-items:center;justify-content:space-between;padding:0 20px;flex-shrink:0}
-.brand{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase}
-.navstats{display:flex;align-items:center;gap:20px}
-.ns{display:flex;align-items:center;gap:6px}
+nav{height:48px;background:var(--s1);border-bottom:1px solid var(--b1);display:flex;align-items:center;justify-content:space-between;padding:0 20px;flex-shrink:0}
+.brand{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--t1)}
+.navstats{display:flex;align-items:center;gap:22px}
+.ns{display:flex;align-items:center;gap:7px}
 .nsl{font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.05em}
-.nsv{font-size:13px;font-weight:600;font-family:'JetBrains Mono',monospace}
-.nsv.g{color:var(--g)}.nsv.r{color:var(--hot)}
-.div{width:1px;height:14px;background:var(--b1)}
-.livedot{width:6px;height:6px;border-radius:50%;background:var(--g);animation:pulse 2s infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.25}}
-.liverow{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--t3)}
+.nsv{font-size:14px;font-weight:600;font-family:'JetBrains Mono',monospace;color:var(--t1)}
+.nsv.g{color:var(--g)}.nsv.r{color:var(--hot)}.nsv.o{color:var(--overdue)}
+.nsep{width:1px;height:16px;background:var(--b1)}
+.live{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--t3)}
+.ld{width:6px;height:6px;border-radius:50%;background:var(--g);animation:bl 2s infinite}
+@keyframes bl{0%,100%{opacity:1}50%{opacity:.25}}
 
-/* LAYOUT - 3 equal columns */
-.layout{display:flex;height:calc(100vh - 46px)}
+.layout{display:flex;height:calc(100vh - 48px)}
 .col{flex:1;display:flex;flex-direction:column;border-right:1px solid var(--b1);overflow:hidden}
 .col:last-child{border-right:none}
 
-/* PANEL HEADER */
-.ph{height:40px;padding:0 14px;border-bottom:1px solid var(--b1);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;background:var(--s1)}
-.pht{font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--t3)}
+.ph{padding:11px 14px;border-bottom:1px solid var(--b1);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;background:var(--s1)}
+.pht{font-size:10px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--t3)}
 .phb{font-size:10px;font-family:'JetBrains Mono',monospace;background:var(--s2);border:1px solid var(--b1);padding:2px 8px;border-radius:20px;color:var(--t2)}
+.phb.red{background:var(--overdued);border-color:rgba(255,74,107,.3);color:var(--overdue)}
 
-/* LISTINGS */
+/* listings */
 .lscroll{flex:1;overflow-y:auto;padding:6px}
-.li{padding:10px 10px;border-radius:var(--r);margin-bottom:2px;transition:background .1s;border:1px solid transparent}
+.li{padding:9px 10px;border-radius:var(--r);margin-bottom:1px;transition:background .1s;border:1px solid transparent}
 .li:hover{background:var(--s2)}
 .li.sel{background:var(--gd);border-color:var(--gb)}
-.lip{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--t1);font-weight:500}
-.lim{font-size:10px;color:var(--t3);margin-top:2px}
-.libtns{display:flex;gap:5px;margin-top:7px}
+.lip{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--t1);font-weight:500}
+.li-price{font-size:10px;color:var(--g);margin-top:2px;font-family:'JetBrains Mono',monospace}
+.lim{font-size:10px;color:var(--t3);margin-top:1px}
+.libtns{display:flex;gap:4px;margin-top:6px}
 .xb{font-size:10px;padding:3px 9px;border-radius:4px;cursor:pointer;font-family:'Inter',sans-serif;font-weight:500;border:1px solid var(--b2);background:transparent;color:var(--t2);transition:all .1s;text-decoration:none;display:inline-block}
 .xb:hover{color:var(--t1);background:var(--s3)}
 .xbg{border-color:var(--gb);color:var(--g);background:var(--gd)}
 .xbg:hover,.xbg.on{background:rgba(200,245,98,.18);border-color:var(--g)}
 
-/* LOOKUP */
-.lookup{flex-shrink:0;padding:14px;border-bottom:1px solid var(--b1);background:var(--s1)}
-.lulbl{font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--t3);margin-bottom:8px;display:flex;align-items:center;gap:8px}
+/* lookup */
+.lookup{flex-shrink:0;padding:13px 14px;background:var(--s1);border-bottom:1px solid var(--b1)}
+.lu-top{display:flex;align-items:center;gap:8px;margin-bottom:9px}
+.lu-lbl{font-size:10px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--t3)}
 .pchip{font-size:10px;font-family:'JetBrains Mono',monospace;background:var(--gd);color:var(--g);border:1px solid var(--gb);padding:2px 8px;border-radius:3px}
-.lurow{display:flex;gap:8px}
-.luin{flex:1;background:var(--s2);border:1px solid var(--b1);border-radius:var(--r);color:var(--t1);font-family:'Inter',sans-serif;font-size:13px;padding:8px 12px;outline:none;transition:border .12s}
-.luin:focus{border-color:var(--gb)}
-.lubtn{padding:8px 18px;background:var(--g);color:#0c0c0c;border:none;border-radius:var(--r);font-size:12px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;white-space:nowrap}
-.lubtn:hover{opacity:.87}
+.lu-row{display:flex;gap:8px}
+.lu-in{flex:1;background:var(--s2);border:1px solid var(--b1);border-radius:var(--r);color:var(--t1);font-family:'Inter',sans-serif;font-size:13px;padding:8px 12px;outline:none;transition:border .12s}
+.lu-in:focus{border-color:var(--gb)}
+.lu-btn{padding:8px 18px;background:var(--g);color:#0c0c0c;border:none;border-radius:var(--r);font-size:12px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;white-space:nowrap}
+.lu-btn:hover{opacity:.87}
 
-/* PIPELINE */
+/* follow up today banner */
+.followup-banner{flex-shrink:0;border-bottom:1px solid var(--b1)}
+.fub-head{padding:8px 14px;background:var(--overdued);display:flex;align-items:center;justify-content:space-between;cursor:pointer}
+.fub-title{font-size:10px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--overdue)}
+.fub-count{font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--overdue)}
+.fub-list{padding:4px 6px;background:var(--s2)}
+.fub-item{display:flex;align-items:center;justify-content:space-between;padding:7px 8px;border-radius:var(--r);cursor:pointer;transition:background .1s;margin-bottom:1px}
+.fub-item:hover{background:var(--s3)}
+.fub-name{font-size:12px;font-weight:500;color:var(--t1)}
+.fub-date{font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--overdue)}
+.fub-stg{font-size:10px;padding:2px 7px;border-radius:20px;font-weight:600}
+
+/* pipeline */
 .pscroll{flex:1;overflow-y:auto;padding:8px 10px}
-.psec{font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--t3);padding:4px 2px 10px;display:flex;justify-content:space-between}
+.psec{font-size:10px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--t3);margin-bottom:9px;display:flex;align-items:center;justify-content:space-between}
 .prw{border-bottom:1px solid var(--b1)}
 .prw:last-child{border-bottom:none}
 .prr{display:flex;align-items:center;gap:10px;padding:10px 8px;border-radius:var(--r);cursor:pointer;transition:background .1s;margin:2px -8px}
 .prr:hover{background:var(--s2)}
 .prr.on{background:var(--gd)}
+.prr.overdue-row{border-left:2px solid var(--overdue);padding-left:6px}
 .prav{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;flex-shrink:0}
 .prin{flex:1;min-width:0}
 .prn{font-size:13px;font-weight:500;color:var(--t1)}
@@ -84,21 +98,40 @@ nav{height:46px;background:var(--s1);border-bottom:1px solid var(--b1);display:f
 .sh{background:var(--hotd);color:var(--hot)}
 .sw{background:var(--warmd);color:var(--warm)}
 .sc{background:var(--coldd);color:var(--cold)}
-.prd{font-size:10px;color:var(--t3);font-family:'JetBrains Mono',monospace}
+.svs{background:rgba(168,85,247,.1);color:#a855f7}
+.svd{background:rgba(34,197,94,.1);color:#22c55e}
+.sfa{background:rgba(251,191,36,.1);color:#fbbf24}
+.sfl{background:rgba(99,102,241,.1);color:#6366f1}
+.sor{background:rgba(249,115,22,.1);color:#f97316}
+.sdc{background:rgba(200,245,98,.15);color:var(--g)}
+.prd{font-size:10px;color:var(--overdue);font-family:'JetBrains Mono',monospace}
+.prd.ok{color:var(--t3)}
 
-/* DETAIL */
+/* detail */
+.fup-section{flex-shrink:0;border-bottom:1px solid var(--b1);max-height:200px;overflow-y:auto}
+.fup-item{display:flex;align-items:center;justify-content:space-between;padding:8px 14px;border-bottom:0.5px solid var(--b1);cursor:pointer;transition:background .1s}
+.fup-item:hover{background:var(--s2)}
+.fup-item:last-child{border-bottom:none}
+.fup-name{font-size:12px;font-weight:500;color:var(--t1)}
+.fup-meta{font-size:10px;color:var(--overdue);margin-top:2px;font-family:'JetBrains Mono',monospace}
+.fup-right{display:flex;flex-direction:column;align-items:flex-end;gap:3px}
+.fup-empty{padding:10px 14px;font-size:11px;color:var(--t3);text-align:center}
 .dempty{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:var(--t3)}
 .dscroll{flex:1;overflow-y:auto;padding:16px}
 .dhead{display:flex;align-items:center;gap:12px;margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid var(--b1)}
 .dav{width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;flex-shrink:0}
 .dname{font-size:15px;font-weight:500}
 .dsub{font-size:11px;color:var(--t3);font-family:'JetBrains Mono',monospace;margin-top:3px}
-.dgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px 16px;margin-bottom:12px}
+.dgrid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px 16px;margin-bottom:12px}
 .dgl{font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:3px}
 .dgv{font-size:12px;color:var(--t1);font-family:'JetBrains Mono',monospace}
+.dgv.g{color:var(--g)}
 .dsec{border-top:1px solid var(--b1);padding-top:12px;margin-top:10px}
 .dsl{font-size:10px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px}
-.dnotes{font-size:12px;color:#aaa;line-height:1.7}
+.dnotes{font-size:12px;color:#aaa;line-height:1.7;white-space:pre-wrap}
+.call-entry{background:var(--s2);border:1px solid var(--b1);border-radius:var(--r);padding:10px 12px;margin-bottom:8px}
+.call-entry-date{font-size:10px;color:var(--t3);font-family:'JetBrains Mono',monospace;margin-bottom:5px}
+.call-entry-notes{font-size:12px;color:#aaa;line-height:1.65}
 .tags{display:flex;flex-wrap:wrap;gap:4px}
 .to{font-size:11px;padding:3px 8px;border-radius:4px;background:var(--hotd);color:var(--hot);border:1px solid rgba(255,107,74,.2)}
 .ts{font-size:11px;padding:3px 8px;border-radius:4px;background:var(--gd);color:var(--g);border:1px solid var(--gb)}
@@ -106,6 +139,9 @@ nav{height:46px;background:var(--s1);border-bottom:1px solid var(--b1);display:f
 .nl{font-size:10px;color:var(--g);text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px}
 .nt{font-size:12px;color:var(--t1);line-height:1.5}
 .nd{font-size:11px;color:var(--t3);margin-top:4px;font-family:'JetBrains Mono',monospace}
+.comm-box{background:var(--gd);border:1px solid var(--gb);border-radius:var(--r);padding:10px 12px;margin-top:10px;display:flex;align-items:center;justify-content:space-between}
+.comm-label{font-size:10px;color:var(--g);text-transform:uppercase;letter-spacing:.06em}
+.comm-val{font-size:16px;font-weight:600;color:var(--g);font-family:'JetBrains Mono',monospace}
 .esec{border-top:1px solid var(--b1);padding-top:14px;margin-top:14px}
 .egrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:9px}
 .ef label{font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:3px}
@@ -113,15 +149,12 @@ nav{height:46px;background:var(--s1);border-bottom:1px solid var(--b1);display:f
 .ef input:focus,.ef select:focus,.ef textarea:focus{border-color:var(--gb)}
 .ef textarea{resize:vertical;min-height:72px;line-height:1.5}
 .ef.fw{grid-column:1/-1}
-.forma{display:flex;align-items:center;gap:7px;margin-bottom:10px}
-.forma input[type=checkbox]{width:13px;height:13px;accent-color:var(--g);cursor:pointer}
-.forma label{font-size:12px;color:var(--t2);cursor:pointer}
 .bsave{width:100%;padding:9px;font-size:12px;font-weight:600;border:1px solid var(--gb);border-radius:var(--r);background:var(--gd);color:var(--g);cursor:pointer;font-family:'Inter',sans-serif;transition:all .1s}
 .bsave:hover{background:rgba(200,245,98,.18)}
 .bsave:disabled{opacity:.4;cursor:not-allowed}
 
-/* owner lookup result card */
-.lrc{background:var(--s2);border:1px solid var(--b1);border-radius:var(--r);overflow:hidden;margin-top:2px}
+/* owner lookup result */
+.lrc{background:var(--s2);border:1px solid var(--b1);border-radius:var(--r);overflow:hidden;margin:14px}
 .lrh{padding:12px 14px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--b1)}
 .lrav{width:40px;height:40px;border-radius:50%;background:var(--gd);border:1px solid var(--gb);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;color:var(--g);flex-shrink:0}
 .lrn{font-size:14px;font-weight:500}
@@ -139,56 +172,62 @@ nav{height:46px;background:var(--s1);border-bottom:1px solid var(--b1);display:f
 .spw{border-top-color:var(--warm)}
 @keyframes sp{to{transform:rotate(360deg)}}
 .ok{padding:7px 10px;background:var(--gd);border:1px solid var(--gb);border-radius:var(--r);font-size:11px;color:var(--g);margin-top:8px}
-.er{padding:7px 10px;background:var(--hotd);border:1px solid rgba(255,107,74,.2);border-radius:var(--r);font-size:11px;color:var(--hot);margin-top:8px}
+.er{padding:7px 10px;background:var(--hotd);border:1px solid rgba(255,107,74,.22);border-radius:var(--r);font-size:11px;color:var(--hot);margin-top:8px}
 .empty{text-align:center;padding:2rem 1rem;color:var(--t3);font-size:12px;line-height:1.8}
 .loading{text-align:center;padding:1.5rem;color:var(--t3);font-size:12px}
 </style>
 </head>
 <body>
 <nav>
-  <div class="brand">DAMAC Lagoons — Ops</div>
+  <div class="brand">DAMAC Lagoons — Daily Ops</div>
   <div class="navstats">
     <div class="ns"><span class="nsl">New</span><span class="nsv g" id="s-new">—</span></div>
-    <div class="div"></div>
+    <div class="nsep"></div>
     <div class="ns"><span class="nsl">Pipeline</span><span class="nsv" id="s-pipe">—</span></div>
-    <div class="div"></div>
+    <div class="nsep"></div>
     <div class="ns"><span class="nsl">Hot</span><span class="nsv r" id="s-hot">—</span></div>
-    <div class="div"></div>
-    <div class="ns"><span class="nsl">Follow up</span><span class="nsv" id="s-follow">—</span></div>
-    <div class="div"></div>
-    <div class="liverow"><div class="livedot"></div><span id="ddate"></span></div>
+    <div class="nsep"></div>
+    <div class="ns"><span class="nsl">Due today</span><span class="nsv o" id="s-due">—</span></div>
+    <div class="nsep"></div>
+    <div class="live"><div class="ld"></div><span id="ddate"></span></div>
   </div>
 </nav>
 
 <div class="layout">
 
-  <!-- COL 1: New Listings -->
   <div class="col">
-    <div class="ph"><span class="pht">New Listings</span><span class="phb" id="lcount">—</span></div>
+    <div class="ph"><span class="pht">New listings</span><span class="phb" id="lcount">—</span></div>
     <div class="lscroll" id="lcon"><div class="loading"><span class="spin"></span>Loading...</div></div>
   </div>
 
-  <!-- COL 2: Lookup + Pipeline -->
   <div class="col">
     <div class="lookup">
-      <div class="lulbl">
-        Owner Lookup
+      <div class="lu-top">
+        <span class="lu-lbl">Owner lookup</span>
         <span class="pchip" id="pchip" style="display:none"></span>
       </div>
-      <div class="lurow">
-        <input type="text" class="luin" id="unit-in" placeholder="Enter unit number e.g. J112" onkeydown="if(event.key==='Enter')doLookup()"/>
-        <button class="lubtn" onclick="doLookup()">Look up</button>
+      <div class="lu-row">
+        <input type="text" class="lu-in" id="unit-in" placeholder="Enter unit number e.g. J112" onkeydown="if(event.key==='Enter')doLookup()"/>
+        <button class="lu-btn" onclick="doLookup()">Look up</button>
       </div>
     </div>
+    <div id="followup-banner" style="display:none" class="followup-banner">
+      <div class="fub-head" onclick="toggleFub()">
+        <span class="fub-title">⚠ Follow ups due</span>
+        <span class="fub-count" id="fub-count">—</span>
+      </div>
+      <div id="fub-list" class="fub-list"></div>
+    </div>
     <div class="pscroll">
-      <div class="psec"><span>Pipeline</span><span id="pcount" style="font-family:'JetBrains Mono',monospace">—</span></div>
+      <div class="psec"><span>Pipeline</span><span id="pcount" style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--t3)">—</span></div>
       <div id="pcon"><div class="loading"><span class="spin"></span>Loading...</div></div>
     </div>
   </div>
 
-  <!-- COL 3: Detail -->
   <div class="col">
-    <div class="ph"><span class="pht" id="dtitle">Owner Detail</span></div>
+    <div class="ph"><span class="pht">Follow ups due</span><span class="phb red" id="fup-badge">—</span></div>
+    <div class="fup-section" id="fup-section"><div class="fup-empty">No follow ups due today</div></div>
+    <div class="ph"><span class="pht" id="dtitle">Owner detail</span></div>
     <div id="dcontent" style="display:flex;flex-direction:column;flex:1;overflow:hidden">
       <div class="dempty">
         <div style="font-size:28px;opacity:.15">◎</div>
@@ -205,18 +244,18 @@ const AT='pat5E0j0M20yO8uHd.9e053bb673d08d265de5f410f6ed07102a52604c587f10099d16
 const BASE='appvJnzFemyD1CtbH';
 const UB=`https://api.airtable.com/v0/${BASE}`;
 const H={'Authorization':`Bearer ${AT}`,'Content-Type':'application/json'};
-let pRecs=[],selId=null,processing=new Set(),selPermit=null;
+let pRecs=[],selId=null,selPermit=null,fubOpen=true;
 const today=new Date();
+const todayStr=today.toISOString().split('T')[0];
 document.getElementById('ddate').textContent=today.toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short',year:'numeric'});
 
 async function atF(t,p=''){const r=await fetch(`${UB}/${encodeURIComponent(t)}?${p}`,{headers:H});const d=await r.json();if(d.error)throw new Error(d.error.message);return d;}
-async function atP(t,id,f){const r=await fetch(`${UB}/${encodeURIComponent(t)}/${id}`,{method:'PATCH',headers:H,body:JSON.stringify({fields:f})});return r.json();}
+async function atP(t,id,f){const r=await fetch(`${UB}/${encodeURIComponent(t)}/${id}`,{method:'PATCH',headers:H,body:JSON.stringify({fields:f})});const d=await r.json();if(d.error)throw new Error(d.error.message);return d;}
 async function loadAll(s=false){try{await Promise.all([loadL(s),loadP(s)]);}catch(e){}}
 
 async function loadL(s=false){
   try{
-    const ts=today.toISOString().split('T')[0];
-    const d=await atF('PENDING',`filterByFormula=IS_AFTER({TIMESTAMP},"${ts}")&sort[0][field]=TIMESTAMP&sort[0][direction]=desc&maxRecords=50`);
+    const d=await atF('PENDING',`filterByFormula=IS_AFTER({TIMESTAMP},"${todayStr}")&sort[0][field]=TIMESTAMP&sort[0][direction]=desc&maxRecords=50`);
     const recs=d.records||[];
     document.getElementById('lcount').textContent=recs.length+' today';
     document.getElementById('s-new').textContent=recs.length;
@@ -225,9 +264,11 @@ async function loadL(s=false){
     c.innerHTML=recs.map(r=>{
       const p=r.fields['DLD PERMIT NUMBER']||'—';
       const url=r.fields['LISTING URL']||'';
+      const price=r.fields['PRICE']||r.fields['price']||'';
       const sel=selPermit===p;
       return `<div class="li ${sel?'sel':''}">
         <div class="lip">${p}</div>
+        ${price?`<div class="li-price">AED ${Number(price).toLocaleString()}</div>`:''}
         <div class="lim">Bayut · Today</div>
         <div class="libtns">
           ${url?`<a href="${url}" target="_blank" class="xb">View ↗</a>`:''}
@@ -239,19 +280,72 @@ async function loadL(s=false){
   }catch(e){document.getElementById('lcon').innerHTML='<div class="empty">Could not load listings.</div>';}
 }
 
+function renderFup(due){
+  const badge=document.getElementById('fup-badge');
+  const section=document.getElementById('fup-section');
+  badge.textContent=due.length||'0';
+  if(!due.length){section.innerHTML='<div class="fup-empty">No follow ups due today ✓</div>';return;}
+  section.innerHTML=due.map(r=>{
+    const name=r.fields['OWNER NAME']||'Unknown';
+    const nd=r.fields['NEXT ACTION DATE']||'';
+    const stage=(r.fields['STAGE']||'WARM').toUpperCase();
+    const sc=getStageClass(stage);
+    const unit=r.fields['UNIT NUMBER']||'';
+    const isOverdue=nd<todayStr;
+    return '<div class="fup-item" onclick="selPipe("'+r.id+'")">'
+      +'<div><div class="fup-name">'+name+'</div><div class="fup-meta">'+(isOverdue?'OVERDUE — ':'')+nd+(unit?' · '+unit:'')+'</div></div>'
+      +'<div class="fup-right"><span class="stg '+sc+'">'+stage+'</span></div>'
+      +'</div>';
+  }).join('');
+}
+function getStageClass(stage){
+  const s=(stage||'').toUpperCase();
+  if(s==='HOT')return 'sh';if(s==='WARM')return 'sw';if(s==='COLD')return 'sc';
+  if(s==='VISIT SCHEDULED')return 'svs';if(s==='VISIT DONE')return 'svd';
+  if(s==='FORM A SENT'||s==='FORM A SIGNED')return 'sfa';
+  if(s==='LISTED')return 'sfl';if(s==='OFFER RECEIVED')return 'sor';
+  if(s==='DEAL CLOSED')return 'sdc';return 'sw';
+}
+
 async function loadP(s=false){
   try{
     const d=await atF('PIPELINE','sort[0][field]=NEXT ACTION DATE&sort[0][direction]=asc&maxRecords=100');
     pRecs=d.records||[];
     document.getElementById('pcount').textContent=pRecs.length+' total';
     document.getElementById('s-pipe').textContent=pRecs.length;
-    document.getElementById('s-hot').textContent=pRecs.filter(r=>r.fields['STAGE']==='HOT').length;
-    const ts=today.toISOString().split('T')[0];
-    document.getElementById('s-follow').textContent=pRecs.filter(r=>{const dd=r.fields['NEXT ACTION DATE'];return dd&&dd<=ts;}).length;
+    document.getElementById('s-hot').textContent=pRecs.filter(r=>(r.fields['STAGE']||'').toUpperCase()==='HOT').length;
+    const due=pRecs.filter(r=>{const dd=r.fields['NEXT ACTION DATE'];return dd&&dd<=todayStr;});
+    document.getElementById('s-due').textContent=due.length;
+    renderFollowUps(due);
+    renderFup(due);
     renderP();
     if(selId){const r=pRecs.find(r=>r.id===selId);if(r)showD(r);}
   }catch(e){document.getElementById('pcon').innerHTML='<div class="empty">Could not load pipeline.</div>';}
 }
+
+function renderFollowUps(due){
+  const banner=document.getElementById('followup-banner');
+  if(!due.length){banner.style.display='none';return;}
+  banner.style.display='block';
+  document.getElementById('fub-count').textContent=due.length+' owner'+(due.length>1?'s':'');
+  if(fubOpen){
+    document.getElementById('fub-list').innerHTML=due.map(r=>{
+      const name=r.fields['OWNER NAME']||'Unknown';
+      const stage=(r.fields['STAGE']||'WARM').toUpperCase();
+      const nd=r.fields['NEXT ACTION DATE']||'';
+      const sc=getStageClass(stage);
+      return `<div class="fub-item" onclick="selPipe('${r.id}')">
+        <div><div class="fub-name">${name}</div><div style="font-size:10px;color:var(--t3);margin-top:1px">${r.fields['UNIT NUMBER']||''}</div></div>
+        <div style="display:flex;align-items:center;gap:8px">
+          <span class="fub-date">${nd}</span>
+          <span class="fub-stg ${sc}">${stage}</span>
+        </div>
+      </div>`;
+    }).join('');
+  }
+}
+
+function toggleFub(){fubOpen=!fubOpen;const l=document.getElementById('fub-list');l.style.display=fubOpen?'block':'none';}
 
 function renderP(){
   const c=document.getElementById('pcon');
@@ -264,28 +358,28 @@ function renderP(){
     const nd=f['NEXT ACTION DATE']||'';
     const cc=f['CALL COUNT']||0;
     const ini=name.split(' ').filter(Boolean).map(w=>w[0]).join('').slice(0,2).toUpperCase();
-    const sc=stage==='HOT'?'sh':stage==='COLD'?'sc':'sw';
+    const sc=getStageClass(stage);
     const avB=stage==='HOT'?'var(--hotd)':stage==='COLD'?'var(--coldd)':'var(--warmd)';
     const avC=stage==='HOT'?'var(--hot)':stage==='COLD'?'var(--cold)':'var(--warm)';
-    const proc=processing.has(name);
+    const isOverdue=nd&&nd<=todayStr;
     const on=selId===id;
-    const sub=proc?'':(f['NEXT ACTION']?f['NEXT ACTION'].substring(0,55)+(f['NEXT ACTION'].length>55?'...':''):(nd?'Follow up '+nd:'No notes yet'));
-    return `<div class="prw"><div class="prr ${on?'on':''}" onclick="selPipe('${id}')">
+    const sub=f['NEXT ACTION']?f['NEXT ACTION'].substring(0,55)+(f['NEXT ACTION'].length>55?'...':''):(nd?'Follow up '+nd:'No notes yet');
+    return `<div class="prw"><div class="prr ${on?'on':''} ${isOverdue&&!on?'overdue-row':''}" onclick="selPipe('${id}')">
       <div class="prav" style="background:${avB};color:${avC}">${ini}</div>
       <div class="prin">
         <div class="prn">${name}<span class="pru">${unit}</span></div>
-        <div class="prs">${proc?`<span style="color:var(--warm)"><span class="spin spw"></span>Analysing...</span>`:sub}</div>
+        <div class="prs">${sub}</div>
       </div>
       <div class="prrt">
         <span class="stg ${sc}">${stage}</span>
-        ${nd?`<span class="prd">${nd}</span>`:''}
+        ${nd?`<span class="prd ${nd>todayStr?'ok':''}">${nd}</span>`:''}
         ${cc?`<span style="font-size:10px;color:var(--t3)">${cc}×</span>`:''}
       </div>
     </div></div>`;
   }).join('');
 }
 
-function selPipe(id){selId=id;const r=pRecs.find(r=>r.id===id);if(r){showD(r);renderP();}}
+function selPipe(id){selId=id;const r=pRecs.find(r=>r.id===id);if(r){showD(r);renderP();renderFollowUps(pRecs.filter(r=>{const dd=r.fields['NEXT ACTION DATE'];return dd&&dd<=todayStr;}));}}
 
 function showD(r){
   const f=r.fields,id=r.id;
@@ -293,48 +387,78 @@ function showD(r){
   const na=f['NEXT ACTION']||'',nd=f['NEXT ACTION DATE']||'',mobile=f['MOBILE']||'—';
   const unit=f['UNIT NUMBER']||'—',cluster=f['CLUSTER']||'—',permit=f['DLD PERMIT NUMBER']||'—';
   const lc=f['LAST CONTACT DATE']||'—',cc=f['CALL COUNT']||0;
-  const ep=f['ESTIMATED SALES PRICE']||'',ce=f['COMMISSIONS ESTIMATE']||'',fa=f['FORM A SIGNED']||false;
+  const ep=f['ESTIMATED SALES PRICE']||'';
+  const commission=ep?'AED '+(Math.round(Number(ep)*0.005)).toLocaleString():'';
   const sc=stage==='HOT'?'var(--hot)':stage==='COLD'?'var(--cold)':'var(--warm)';
   const sb=stage==='HOT'?'var(--hotd)':stage==='COLD'?'var(--coldd)':'var(--warmd)';
+  const isOverdue=nd&&nd<=todayStr;
   let obj=[],sig=[];
   try{obj=JSON.parse(f['KEY OBJECTIONS']||'[]');}catch(e){if(f['KEY OBJECTIONS'])obj=[f['KEY OBJECTIONS']];}
   try{sig=JSON.parse(f['POSITIVE SIGNALS']||'[]');}catch(e){if(f['POSITIVE SIGNALS'])sig=[f['POSITIVE SIGNALS']];}
   const ini=name.split(' ').filter(Boolean).map(w=>w[0]).join('').slice(0,2).toUpperCase();
   const ne=name.replace(/'/g,"\\'");
+  const stageColor=getStageClass(stage);
+
   document.getElementById('dtitle').textContent=name;
   document.getElementById('dcontent').innerHTML=`<div class="dscroll">
+    ${isOverdue?`<div style="background:var(--overdued);border:1px solid rgba(255,74,107,.3);border-radius:var(--r);padding:8px 12px;margin-bottom:14px;font-size:11px;color:var(--overdue)">⚠ Follow up overdue since ${nd}</div>`:''}
     <div class="dhead">
       <div class="dav" style="background:${sb};color:${sc}">${ini}</div>
-      <div><div class="dname">${name}</div><div class="dsub">Unit ${unit} · ${cluster}</div></div>
+      <div>
+        <div class="dname">${name}</div>
+        <div class="dsub">Unit ${unit} · ${cluster}</div>
+      </div>
     </div>
     <div class="dgrid">
       <div><div class="dgl">Mobile</div><div class="dgv">${mobile}</div></div>
       <div><div class="dgl">Stage</div><div class="dgv" style="color:${sc}">${stage}</div></div>
+      <div><div class="dgl">Calls made</div><div class="dgv">${cc}</div></div>
       <div><div class="dgl">DLD Permit</div><div class="dgv">${permit}</div></div>
       <div><div class="dgl">Last contact</div><div class="dgv">${lc}</div></div>
-      <div><div class="dgl">Calls made</div><div class="dgv">${cc}</div></div>
       ${ep?`<div><div class="dgl">Est. price</div><div class="dgv">AED ${Number(ep).toLocaleString()}</div></div>`:''}
-      ${ce?`<div><div class="dgl">Commission</div><div class="dgv">AED ${Number(ce).toLocaleString()}</div></div>`:''}
-      ${fa?`<div><div class="dgl">Form A</div><div class="dgv" style="color:var(--g)">✓ Signed</div></div>`:''}
     </div>
-    ${notes?`<div class="dsec"><div class="dsl">Call notes</div><div class="dnotes">${notes}</div></div>`:''}
+    ${commission?`<div class="comm-box"><span class="comm-label">Your commission (0.5%)</span><span class="comm-val">${commission}</span></div>`:''}
+    ${notes?`<div class="dsec"><div class="dsl">Call history</div>${formatCallHistory(notes,lc)}</div>`:''}
     ${obj.length?`<div class="dsec"><div class="dsl">Objections</div><div class="tags">${obj.map(o=>`<span class="to">${o}</span>`).join('')}</div></div>`:''}
     ${sig.length?`<div class="dsec"><div class="dsl">Positive signals</div><div class="tags">${sig.map(s=>`<span class="ts">${s}</span>`).join('')}</div></div>`:''}
-    ${na||nd?`<div class="nbox"><div class="nl">Next action</div>${na?`<div class="nt">${na}</div>`:''}${nd?`<div class="nd">Follow up: ${nd}</div>`:''}</div>`:''}
+    ${na||nd?`<div class="nbox"><div class="nl">Next action</div>${na?`<div class="nt">${na}</div>`:''}${nd?`<div class="nd">Follow up: ${nd}${isOverdue?' ⚠ OVERDUE':''}</div>`:''}</div>`:''}
     <div class="esec">
       <div class="dsl" style="margin-bottom:10px">Edit record</div>
       <div class="egrid">
-        <div class="ef"><label>Stage</label><select id="es-${id}"><option ${stage==='COLD'?'selected':''}>COLD</option><option ${stage==='WARM'?'selected':''}>WARM</option><option ${stage==='HOT'?'selected':''}>HOT</option><option ${stage==='VISIT SCHEDULED'?'selected':''}>VISIT SCHEDULED</option><option ${stage==='VISIT DONE'?'selected':''}>VISIT DONE</option><option ${stage==='FORM A SENT'?'selected':''}>FORM A SENT</option><option ${stage==='FORM A SIGNED'?'selected':''}>FORM A SIGNED</option><option ${stage==='LISTED'?'selected':''}>LISTED</option><option ${stage==='OFFER RECEIVED'?'selected':''}>OFFER RECEIVED</option><option ${stage==='DEAL CLOSED'?'selected':''}>DEAL CLOSED</option></select></div>
+        <div class="ef"><label>Stage</label><select id="es-${id}">
+          <option ${stage==='COLD'?'selected':''}>COLD</option>
+          <option ${stage==='WARM'?'selected':''}>WARM</option>
+          <option ${stage==='HOT'?'selected':''}>HOT</option>
+          <option ${stage==='VISIT SCHEDULED'?'selected':''}>VISIT SCHEDULED</option>
+          <option ${stage==='VISIT DONE'?'selected':''}>VISIT DONE</option>
+          <option ${stage==='FORM A SENT'?'selected':''}>FORM A SENT</option>
+          <option ${stage==='FORM A SIGNED'?'selected':''}>FORM A SIGNED</option>
+          <option ${stage==='LISTED'?'selected':''}>LISTED</option>
+          <option ${stage==='OFFER RECEIVED'?'selected':''}>OFFER RECEIVED</option>
+          <option ${stage==='DEAL CLOSED'?'selected':''}>DEAL CLOSED</option>
+        </select></div>
         <div class="ef"><label>Follow up date</label><input type="date" id="ed-${id}" value="${nd}"/></div>
         <div class="ef"><label>Est. price (AED)</label><input type="number" id="ep-${id}" value="${ep}" placeholder="4200000"/></div>
         <div class="ef"><label>Next action</label><input type="text" id="ea-${id}" value="${na.replace(/"/g,'&quot;')}" placeholder="What to do next"/></div>
-        <div class="ef fw"><label>Call notes</label><textarea id="en-${id}">${notes}</textarea></div>
+        <div class="ef fw"><label>Manual call notes</label><textarea id="en-${id}" placeholder="Add notes manually if needed (Claude auto-fills after recording)">${notes}</textarea></div>
       </div>
-  
       <button class="bsave" onclick="saveR('${id}')">Save changes</button>
       <div id="ss-${id}"></div>
     </div>
   </div>`;
+}
+
+function formatCallHistory(notes,lastContact){
+  if(!notes)return '';
+  const entries=notes.split('---CALL---').filter(e=>e.trim());
+  if(entries.length<=1){
+    return `<div class="call-entry"><div class="call-entry-date">${lastContact||'Unknown date'}</div><div class="call-entry-notes">${notes}</div></div>`;
+  }
+  return entries.reverse().map((e,i)=>{
+    const lines=e.trim().split('\n');
+    const dateLine=lines[0].startsWith('DATE:')?lines.shift().replace('DATE:','').trim():lastContact||'Unknown date';
+    return `<div class="call-entry"><div class="call-entry-date">Call ${entries.length-i} · ${dateLine}</div><div class="call-entry-notes">${lines.join('\n')}</div></div>`;
+  }).join('');
 }
 
 async function saveR(id){
@@ -349,7 +473,7 @@ async function saveR(id){
     const price=document.getElementById(`ep-${id}`).value;if(price)fields['ESTIMATED SALES PRICE']=parseFloat(price);
     await atP('PIPELINE',id,fields);
     st.innerHTML='<div class="ok">✓ Saved</div>';btn.textContent='✓ Saved';
-    setTimeout(()=>loadP(true),2000);
+    setTimeout(()=>loadP(true),1500);
   }catch(e){st.innerHTML=`<div class="er">${e.message}</div>`;btn.disabled=false;btn.textContent='Save changes';}
 }
 
@@ -385,7 +509,7 @@ async function doLookup(){
     const ne=name.replace(/'/g,"\\'");
     document.getElementById('dtitle').textContent='Owner found';
     document.getElementById('dcontent').innerHTML=`
-      <div class="lrc" style="margin:14px">
+      <div class="lrc">
         <div class="lrh">
           <div class="lrav">${ini}</div>
           <div><div class="lrn">${name}</div><div class="lru">Unit ${unit} · ${cluster}</div></div>
@@ -417,7 +541,7 @@ async function doCreate(name,unit,mobile,cluster,permit){
     document.getElementById('pchip').style.display='none';
     document.getElementById('unit-in').value='';
     document.getElementById('unit-in').placeholder='Enter unit number e.g. J112';
-    await loadP(true);
+    setTimeout(()=>loadP(true),1000);
   }catch(e){st.innerHTML=`<div class="er">${e.message}</div>`;btn.disabled=false;btn.textContent='✓ Create pipeline record';}
 }
 
