@@ -1,467 +1,428 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>DAMAC Ops — Sufyan</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>DAMAC Ops</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
 <style>
-  :root {
-    --bg: #0a0a0a;
-    --surface: #111111;
-    --surface2: #1a1a1a;
-    --border: #2a2a2a;
-    --border2: #333;
-    --text: #f0f0f0;
-    --text2: #888;
-    --text3: #555;
-    --accent: #c8f562;
-    --accent-dim: rgba(200,245,98,0.12);
-    --hot: #ff6b4a;
-    --hot-bg: rgba(255,107,74,0.12);
-    --warm: #f5a623;
-    --warm-bg: rgba(245,166,35,0.12);
-    --cold: #4a9eff;
-    --cold-bg: rgba(74,158,255,0.12);
-    --radius: 10px;
-    --radius-sm: 6px;
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
-  
-  .app { max-width: 960px; margin: 0 auto; padding: 2rem 1.5rem; }
-  
-  .topbar { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 0.5px solid var(--border); }
-  .topbar-title { font-size: 13px; font-weight: 500; color: var(--text2); letter-spacing: 0.08em; text-transform: uppercase; }
-  .topbar-sub { font-size: 11px; color: var(--text3); margin-top: 3px; font-family: 'DM Mono', monospace; }
-  .status-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); display: inline-block; margin-right: 6px; animation: pulse 2s infinite; }
-  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
-  .live-label { font-size: 11px; color: var(--accent); font-family: 'DM Mono', monospace; display: flex; align-items: center; }
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0c0c0c;--s1:#131313;--s2:#1a1a1a;--s3:#212121;
+  --b1:#252525;--b2:#303030;
+  --t1:#f0f0f0;--t2:#777;--t3:#404040;
+  --g:#c8f562;--gd:rgba(200,245,98,.1);--gb:rgba(200,245,98,.22);
+  --hot:#ff6b4a;--hotd:rgba(255,107,74,.1);
+  --warm:#f5a623;--warmd:rgba(245,166,35,.1);
+  --cold:#4a9eff;--coldd:rgba(74,158,255,.1);
+  --r:6px;
+}
+html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif;background:var(--bg);color:var(--t1);font-size:13px}
+::-webkit-scrollbar{width:3px}::-webkit-scrollbar-thumb{background:var(--b2);border-radius:2px}
 
-  .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 1.5rem; }
-  .stat { background: var(--surface); border: 0.5px solid var(--border); border-radius: var(--radius); padding: 14px 16px; }
-  .stat-label { font-size: 10px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px; }
-  .stat-val { font-size: 26px; font-weight: 600; color: var(--text); font-family: 'DM Mono', monospace; }
-  .stat-val.accent { color: var(--accent); }
+/* NAV */
+nav{height:46px;background:var(--s1);border-bottom:1px solid var(--b1);display:flex;align-items:center;justify-content:space-between;padding:0 20px;flex-shrink:0}
+.brand{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase}
+.navstats{display:flex;align-items:center;gap:20px}
+.ns{display:flex;align-items:center;gap:6px}
+.nsl{font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.05em}
+.nsv{font-size:13px;font-weight:600;font-family:'JetBrains Mono',monospace}
+.nsv.g{color:var(--g)}.nsv.r{color:var(--hot)}
+.div{width:1px;height:14px;background:var(--b1)}
+.livedot{width:6px;height:6px;border-radius:50%;background:var(--g);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.25}}
+.liverow{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--t3)}
 
-  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-  .full { grid-column: 1 / -1; }
-  .card { background: var(--surface); border: 0.5px solid var(--border); border-radius: var(--radius); padding: 1.25rem; }
-  .card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; }
-  .card-title { font-size: 10px; font-weight: 500; color: var(--text3); text-transform: uppercase; letter-spacing: 0.08em; }
-  .card-count { font-size: 10px; font-family: 'DM Mono', monospace; color: var(--text3); background: var(--surface2); padding: 2px 7px; border-radius: 20px; border: 0.5px solid var(--border); }
+/* LAYOUT - 3 equal columns */
+.layout{display:flex;height:calc(100vh - 46px)}
+.col{flex:1;display:flex;flex-direction:column;border-right:1px solid var(--b1);overflow:hidden}
+.col:last-child{border-right:none}
 
-  .listing-row { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 0.5px solid var(--border); }
-  .listing-row:last-child { border-bottom: none; }
-  .permit-code { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--text); }
-  .permit-meta { font-size: 11px; color: var(--text3); margin-top: 2px; }
-  .badge { font-size: 10px; padding: 3px 9px; border-radius: 20px; font-weight: 500; }
-  .badge-new { background: var(--accent-dim); color: var(--accent); border: 0.5px solid rgba(200,245,98,0.3); }
-  .badge-done { background: var(--surface2); color: var(--text3); border: 0.5px solid var(--border); }
-  .use-btn { font-size: 11px; padding: 4px 10px; border: 0.5px solid var(--border2); border-radius: var(--radius-sm); background: transparent; color: var(--text2); cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all 0.15s; margin-left: 8px; }
-  .use-btn:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-dim); }
+/* PANEL HEADER */
+.ph{height:40px;padding:0 14px;border-bottom:1px solid var(--b1);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;background:var(--s1)}
+.pht{font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--t3)}
+.phb{font-size:10px;font-family:'JetBrains Mono',monospace;background:var(--s2);border:1px solid var(--b1);padding:2px 8px;border-radius:20px;color:var(--t2)}
 
-  .section-label { font-size: 11px; color: var(--text3); margin-bottom: 7px; }
-  .input-row { display: flex; gap: 8px; }
-  input[type=text], select { background: var(--surface2); border: 0.5px solid var(--border2); border-radius: var(--radius-sm); color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 13px; padding: 8px 12px; outline: none; transition: border 0.15s; }
-  input[type=text]:focus, select:focus { border-color: var(--accent); }
-  input[type=text] { flex: 1; }
-  select { width: 100%; margin-bottom: 10px; }
-  .lookup-btn { padding: 8px 16px; background: var(--accent); color: #0a0a0a; border: none; border-radius: var(--radius-sm); font-size: 13px; font-weight: 600; cursor: pointer; font-family: 'DM Sans', sans-serif; white-space: nowrap; transition: opacity 0.15s; }
-  .lookup-btn:hover { opacity: 0.85; }
-  .lookup-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+/* LISTINGS */
+.lscroll{flex:1;overflow-y:auto;padding:6px}
+.li{padding:10px 10px;border-radius:var(--r);margin-bottom:2px;transition:background .1s;border:1px solid transparent}
+.li:hover{background:var(--s2)}
+.li.sel{background:var(--gd);border-color:var(--gb)}
+.lip{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--t1);font-weight:500}
+.lim{font-size:10px;color:var(--t3);margin-top:2px}
+.libtns{display:flex;gap:5px;margin-top:7px}
+.xb{font-size:10px;padding:3px 9px;border-radius:4px;cursor:pointer;font-family:'Inter',sans-serif;font-weight:500;border:1px solid var(--b2);background:transparent;color:var(--t2);transition:all .1s;text-decoration:none;display:inline-block}
+.xb:hover{color:var(--t1);background:var(--s3)}
+.xbg{border-color:var(--gb);color:var(--g);background:var(--gd)}
+.xbg:hover,.xbg.on{background:rgba(200,245,98,.18);border-color:var(--g)}
 
-  .owner-result { margin-top: 12px; border: 0.5px solid var(--border2); border-radius: var(--radius); overflow: hidden; }
-  .owner-head { background: var(--surface2); padding: 12px 14px; display: flex; align-items: center; gap: 10px; border-bottom: 0.5px solid var(--border); }
-  .avatar { width: 36px; height: 36px; border-radius: 50%; background: var(--accent-dim); border: 0.5px solid rgba(200,245,98,0.3); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; color: var(--accent); flex-shrink: 0; }
-  .owner-name-text { font-size: 14px; font-weight: 500; color: var(--text); }
-  .owner-unit-text { font-size: 11px; color: var(--text3); font-family: 'DM Mono', monospace; margin-top: 1px; }
-  .owner-fields { padding: 12px 14px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-  .field-label { font-size: 10px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 3px; }
-  .field-val { font-size: 13px; color: var(--text); font-family: 'DM Mono', monospace; }
-  .create-btn { margin: 0 14px 14px; width: calc(100% - 28px); padding: 9px; font-size: 13px; font-weight: 600; border: 0.5px solid rgba(200,245,98,0.4); border-radius: var(--radius-sm); background: var(--accent-dim); color: var(--accent); cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all 0.15s; }
-  .create-btn:hover { background: rgba(200,245,98,0.2); }
-  .create-btn:disabled { opacity: 0.4; cursor: not-allowed; }
-  .success-msg { margin: 0 14px 14px; padding: 8px 12px; background: var(--accent-dim); border: 0.5px solid rgba(200,245,98,0.3); border-radius: var(--radius-sm); font-size: 12px; color: var(--accent); }
-  .error-msg { margin: 0 14px 14px; padding: 8px 12px; background: rgba(255,107,74,0.1); border: 0.5px solid rgba(255,107,74,0.3); border-radius: var(--radius-sm); font-size: 12px; color: var(--hot); }
+/* LOOKUP */
+.lookup{flex-shrink:0;padding:14px;border-bottom:1px solid var(--b1);background:var(--s1)}
+.lulbl{font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--t3);margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.pchip{font-size:10px;font-family:'JetBrains Mono',monospace;background:var(--gd);color:var(--g);border:1px solid var(--gb);padding:2px 8px;border-radius:3px}
+.lurow{display:flex;gap:8px}
+.luin{flex:1;background:var(--s2);border:1px solid var(--b1);border-radius:var(--r);color:var(--t1);font-family:'Inter',sans-serif;font-size:13px;padding:8px 12px;outline:none;transition:border .12s}
+.luin:focus{border-color:var(--gb)}
+.lubtn{padding:8px 18px;background:var(--g);color:#0c0c0c;border:none;border-radius:var(--r);font-size:12px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;white-space:nowrap}
+.lubtn:hover{opacity:.87}
 
-  .upload-area { border: 0.5px dashed var(--border2); border-radius: var(--radius-sm); padding: 1.5rem; text-align: center; cursor: pointer; transition: all 0.15s; position: relative; }
-  .upload-area:hover, .upload-area.dragover { border-color: var(--accent); background: var(--accent-dim); }
-  .upload-area input[type=file] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
-  .upload-icon { font-size: 22px; color: var(--text3); margin-bottom: 6px; }
-  .upload-text { font-size: 12px; color: var(--text3); }
-  .upload-filename { font-size: 12px; color: var(--accent); margin-top: 4px; font-family: 'DM Mono', monospace; }
-  .upload-submit { margin-top: 10px; width: 100%; padding: 9px; font-size: 13px; font-weight: 600; border: 0.5px solid var(--border2); border-radius: var(--radius-sm); background: transparent; color: var(--text); cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all 0.15s; }
-  .upload-submit:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-dim); }
-  .upload-submit:disabled { opacity: 0.4; cursor: not-allowed; }
+/* PIPELINE */
+.pscroll{flex:1;overflow-y:auto;padding:8px 10px}
+.psec{font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--t3);padding:4px 2px 10px;display:flex;justify-content:space-between}
+.prw{border-bottom:1px solid var(--b1)}
+.prw:last-child{border-bottom:none}
+.prr{display:flex;align-items:center;gap:10px;padding:10px 8px;border-radius:var(--r);cursor:pointer;transition:background .1s;margin:2px -8px}
+.prr:hover{background:var(--s2)}
+.prr.on{background:var(--gd)}
+.prav{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;flex-shrink:0}
+.prin{flex:1;min-width:0}
+.prn{font-size:13px;font-weight:500;color:var(--t1)}
+.pru{font-size:10px;color:var(--t3);font-family:'JetBrains Mono',monospace;margin-left:5px}
+.prs{font-size:11px;color:var(--t3);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.prrt{display:flex;flex-direction:column;align-items:flex-end;gap:3px;flex-shrink:0}
+.stg{font-size:10px;padding:2px 8px;border-radius:20px;font-weight:600}
+.sh{background:var(--hotd);color:var(--hot)}
+.sw{background:var(--warmd);color:var(--warm)}
+.sc{background:var(--coldd);color:var(--cold)}
+.prd{font-size:10px;color:var(--t3);font-family:'JetBrains Mono',monospace}
 
-  .pipeline-row { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 0.5px solid var(--border); }
-  .pipeline-row:last-child { border-bottom: none; }
-  .p-avatar { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; flex-shrink: 0; }
-  .p-info { flex: 1; min-width: 0; }
-  .p-name { font-size: 13px; font-weight: 500; color: var(--text); }
-  .p-notes { font-size: 11px; color: var(--text3); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .p-right { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; flex-shrink: 0; }
-  .stage-badge { font-size: 10px; padding: 3px 9px; border-radius: 20px; font-weight: 600; }
-  .stage-hot { background: var(--hot-bg); color: var(--hot); }
-  .stage-warm { background: var(--warm-bg); color: var(--warm); }
-  .stage-cold { background: var(--cold-bg); color: var(--cold); }
-  .followup-date { font-size: 10px; color: var(--text3); font-family: 'DM Mono', monospace; }
+/* DETAIL */
+.dempty{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:var(--t3)}
+.dscroll{flex:1;overflow-y:auto;padding:16px}
+.dhead{display:flex;align-items:center;gap:12px;margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid var(--b1)}
+.dav{width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;flex-shrink:0}
+.dname{font-size:15px;font-weight:500}
+.dsub{font-size:11px;color:var(--t3);font-family:'JetBrains Mono',monospace;margin-top:3px}
+.dgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px 16px;margin-bottom:12px}
+.dgl{font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:3px}
+.dgv{font-size:12px;color:var(--t1);font-family:'JetBrains Mono',monospace}
+.dsec{border-top:1px solid var(--b1);padding-top:12px;margin-top:10px}
+.dsl{font-size:10px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px}
+.dnotes{font-size:12px;color:#aaa;line-height:1.7}
+.tags{display:flex;flex-wrap:wrap;gap:4px}
+.to{font-size:11px;padding:3px 8px;border-radius:4px;background:var(--hotd);color:var(--hot);border:1px solid rgba(255,107,74,.2)}
+.ts{font-size:11px;padding:3px 8px;border-radius:4px;background:var(--gd);color:var(--g);border:1px solid var(--gb)}
+.nbox{background:rgba(200,245,98,.05);border:1px solid var(--gb);border-radius:var(--r);padding:10px 12px;margin-top:12px}
+.nl{font-size:10px;color:var(--g);text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px}
+.nt{font-size:12px;color:var(--t1);line-height:1.5}
+.nd{font-size:11px;color:var(--t3);margin-top:4px;font-family:'JetBrains Mono',monospace}
+.esec{border-top:1px solid var(--b1);padding-top:14px;margin-top:14px}
+.egrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:9px}
+.ef label{font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:3px}
+.ef input,.ef select,.ef textarea{width:100%;background:var(--s2);border:1px solid var(--b1);border-radius:var(--r);color:var(--t1);font-family:'Inter',sans-serif;font-size:12px;padding:7px 10px;outline:none;transition:border .12s}
+.ef input:focus,.ef select:focus,.ef textarea:focus{border-color:var(--gb)}
+.ef textarea{resize:vertical;min-height:72px;line-height:1.5}
+.ef.fw{grid-column:1/-1}
+.forma{display:flex;align-items:center;gap:7px;margin-bottom:10px}
+.forma input[type=checkbox]{width:13px;height:13px;accent-color:var(--g);cursor:pointer}
+.forma label{font-size:12px;color:var(--t2);cursor:pointer}
+.bsave{width:100%;padding:9px;font-size:12px;font-weight:600;border:1px solid var(--gb);border-radius:var(--r);background:var(--gd);color:var(--g);cursor:pointer;font-family:'Inter',sans-serif;transition:all .1s}
+.bsave:hover{background:rgba(200,245,98,.18)}
+.bsave:disabled{opacity:.4;cursor:not-allowed}
 
-  .spinner { display: inline-block; width: 12px; height: 12px; border: 1.5px solid var(--border2); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.6s linear infinite; vertical-align: middle; margin-right: 6px; }
-  @keyframes spin { to { transform: rotate(360deg); } }
+/* owner lookup result card */
+.lrc{background:var(--s2);border:1px solid var(--b1);border-radius:var(--r);overflow:hidden;margin-top:2px}
+.lrh{padding:12px 14px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--b1)}
+.lrav{width:40px;height:40px;border-radius:50%;background:var(--gd);border:1px solid var(--gb);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;color:var(--g);flex-shrink:0}
+.lrn{font-size:14px;font-weight:500}
+.lru{font-size:11px;color:var(--t3);font-family:'JetBrains Mono',monospace;margin-top:2px}
+.lrfs{padding:12px 14px;display:grid;grid-template-columns:1fr 1fr;gap:9px 14px}
+.lrfl{font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:3px}
+.lrfv{font-size:12px;font-family:'JetBrains Mono',monospace}
+.lrfv.g{color:var(--g)}
+.lra{padding:10px 14px;border-top:1px solid var(--b1)}
+.bcreate{width:100%;padding:9px;font-size:13px;font-weight:600;border:1px solid var(--gb);border-radius:var(--r);background:var(--gd);color:var(--g);cursor:pointer;font-family:'Inter',sans-serif;transition:all .1s}
+.bcreate:hover{background:rgba(200,245,98,.18)}
+.bcreate:disabled{opacity:.4;cursor:not-allowed}
 
-  .empty-state { text-align: center; padding: 2rem; color: var(--text3); font-size: 13px; }
-  .loading-state { text-align: center; padding: 1.5rem; color: var(--text3); font-size: 12px; }
-
-  @media (max-width: 600px) {
-    .grid { grid-template-columns: 1fr; }
-    .full { grid-column: 1; }
-    .stats { grid-template-columns: repeat(2, 1fr); }
-  }
+.spin{display:inline-block;width:11px;height:11px;border:1.5px solid var(--b2);border-top-color:var(--g);border-radius:50%;animation:sp .6s linear infinite;vertical-align:middle;margin-right:5px}
+.spw{border-top-color:var(--warm)}
+@keyframes sp{to{transform:rotate(360deg)}}
+.ok{padding:7px 10px;background:var(--gd);border:1px solid var(--gb);border-radius:var(--r);font-size:11px;color:var(--g);margin-top:8px}
+.er{padding:7px 10px;background:var(--hotd);border:1px solid rgba(255,107,74,.2);border-radius:var(--r);font-size:11px;color:var(--hot);margin-top:8px}
+.empty{text-align:center;padding:2rem 1rem;color:var(--t3);font-size:12px;line-height:1.8}
+.loading{text-align:center;padding:1.5rem;color:var(--t3);font-size:12px}
 </style>
 </head>
 <body>
-<div class="app">
-  <div class="topbar">
-    <div>
-      <div class="topbar-title">DAMAC Lagoons — Daily Ops</div>
-      <div class="topbar-sub" id="date-display"></div>
-    </div>
-    <div class="live-label"><span class="status-dot"></span>Live</div>
+<nav>
+  <div class="brand">DAMAC Lagoons — Ops</div>
+  <div class="navstats">
+    <div class="ns"><span class="nsl">New</span><span class="nsv g" id="s-new">—</span></div>
+    <div class="div"></div>
+    <div class="ns"><span class="nsl">Pipeline</span><span class="nsv" id="s-pipe">—</span></div>
+    <div class="div"></div>
+    <div class="ns"><span class="nsl">Hot</span><span class="nsv r" id="s-hot">—</span></div>
+    <div class="div"></div>
+    <div class="ns"><span class="nsl">Follow up</span><span class="nsv" id="s-follow">—</span></div>
+    <div class="div"></div>
+    <div class="liverow"><div class="livedot"></div><span id="ddate"></span></div>
+  </div>
+</nav>
+
+<div class="layout">
+
+  <!-- COL 1: New Listings -->
+  <div class="col">
+    <div class="ph"><span class="pht">New Listings</span><span class="phb" id="lcount">—</span></div>
+    <div class="lscroll" id="lcon"><div class="loading"><span class="spin"></span>Loading...</div></div>
   </div>
 
-  <div class="stats">
-    <div class="stat"><div class="stat-label">New today</div><div class="stat-val accent" id="stat-new">—</div></div>
-    <div class="stat"><div class="stat-label">In pipeline</div><div class="stat-val" id="stat-pipeline">—</div></div>
-    <div class="stat"><div class="stat-label">Hot leads</div><div class="stat-val" id="stat-hot">—</div></div>
-    <div class="stat"><div class="stat-label">Follow up today</div><div class="stat-val" id="stat-followup">—</div></div>
-  </div>
-
-  <div class="grid">
-    <div class="card full">
-      <div class="card-header">
-        <span class="card-title">New listings</span>
-        <span class="card-count" id="listings-count">loading...</span>
+  <!-- COL 2: Lookup + Pipeline -->
+  <div class="col">
+    <div class="lookup">
+      <div class="lulbl">
+        Owner Lookup
+        <span class="pchip" id="pchip" style="display:none"></span>
       </div>
-      <div id="listings-container"><div class="loading-state"><span class="spinner"></span>Fetching listings...</div></div>
+      <div class="lurow">
+        <input type="text" class="luin" id="unit-in" placeholder="Enter unit number e.g. J112" onkeydown="if(event.key==='Enter')doLookup()"/>
+        <button class="lubtn" onclick="doLookup()">Look up</button>
+      </div>
     </div>
-
-    <div class="card">
-      <div class="card-header"><span class="card-title">Owner lookup</span></div>
-      <div class="section-label">Enter unit number from Murtaza</div>
-      <div class="input-row">
-        <input type="text" id="unit-input" placeholder="e.g. J112" />
-        <button class="lookup-btn" onclick="lookupOwner()">Look up</button>
-      </div>
-      <div id="owner-result"></div>
-    </div>
-
-    <div class="card">
-      <div class="card-header"><span class="card-title">Upload recording</span></div>
-      <div class="section-label">Select the pipeline owner this call is for</div>
-      <select id="owner-select"><option value="">Select owner...</option></select>
-      <div class="upload-area" id="upload-area">
-        <input type="file" id="file-input" accept=".mp3,.m4a,.wav,.mp4" onchange="handleFileSelect(this)" />
-        <div class="upload-icon">↑</div>
-        <div class="upload-text">Tap to select recording from your phone</div>
-        <div class="upload-filename" id="filename-display"></div>
-      </div>
-      <button class="upload-submit" id="upload-btn" onclick="uploadRecording()" disabled>Upload → triggers transcription</button>
-      <div id="upload-status"></div>
-    </div>
-
-    <div class="card full">
-      <div class="card-header">
-        <span class="card-title">Pipeline</span>
-        <span class="card-count" id="pipeline-count">loading...</span>
-      </div>
-      <div id="pipeline-container"><div class="loading-state"><span class="spinner"></span>Loading pipeline...</div></div>
+    <div class="pscroll">
+      <div class="psec"><span>Pipeline</span><span id="pcount" style="font-family:'JetBrains Mono',monospace">—</span></div>
+      <div id="pcon"><div class="loading"><span class="spin"></span>Loading...</div></div>
     </div>
   </div>
+
+  <!-- COL 3: Detail -->
+  <div class="col">
+    <div class="ph"><span class="pht" id="dtitle">Owner Detail</span></div>
+    <div id="dcontent" style="display:flex;flex-direction:column;flex:1;overflow:hidden">
+      <div class="dempty">
+        <div style="font-size:28px;opacity:.15">◎</div>
+        <div style="font-size:12px">Nothing selected</div>
+        <div style="font-size:11px;opacity:.5">Look up a unit or tap a pipeline owner</div>
+      </div>
+    </div>
+  </div>
+
 </div>
 
 <script>
-const AIRTABLE_TOKEN = 'pat8Sm35d6TUaosI7';
-const BASE_ID = 'appvJnzFemyD1CtbH';
-const DROPBOX_TOKEN = 'sl.u.AGhgBOrQ7DGJOVdcHoJo100D-hOxFLVJAOXr6PPcRJceotmwf_f9Kyqx1J_hU2JUq1n0rR-9Vib2JCCGNrcna982J2iwqtwpM-YtFncKfaE7EsBXEr7uZ2mwdxabNtPeh5axXZzL7-uHF1ceE_Re1N6YbJoMKX_yq5L5dc8-hyJz7wvmKVt3JsSJEGxPrVUgvNcQ4kw6MjwQkYOC2NBZ7eN-gcl5hG-QBTxR8-puLRyv4EaOtXPEh0OldVcqF2NTeLQvPtPjCOc5jPL58Xawey7XhdHXQDKp0MNlPmuJxTc06bbUFepthfN_NzaGXwAav5zv5ZhT_00fJ_lMxgJp69TuDAfvZJgcQOivvcE5tU3OCyGz7I6hqNpx3VywnfWLK3VzpPFtNg51-9KvRbe8xam5umZKuW92JGFmQnj8Pi937qUq_gLTnftOWrJCZc-BY1wUjigYzUcd75kR6cudI6IlE_bzh4zgh3gms2azry5g4cA4ktIfME62o4Su9vaNNfDKOWo5e6HIs__EIkMWn4mCYDJ9jMJnAs4IMxcpGjwunemHDrYCbrcAc90ZQAqAtG1BDaou0LYJC9wZb0iQgOfCsJ0rd5QvfLyFiLpUdOxV7E0oimvqbkMDmGF6dUTVj6wj7i8cRie0OYw-JKLM4ACBOacKMAO69kZyRms5WYGfni_kGzJVjgwuhcfx34B7XcWyNSoBdjg3AGLQLsMGWlvW16-ZdzwSoYTBJng5035Xy6axhffZ-41hZa2PZ7ErB_LxMUmDks66JckB30inuylX0SEZnYZ3XFNizDKGeP-naIgrEQNqOIjnbtpOsqpnNLI4JHGCvnLU-aMt6zWYFnBbYxhxHpUa_6H4iTOqB_zAjnx-Zo4MiDAcVke4ewZ0ZKNg8pEvyHs0Nvdiyy5tT2J6518p_IUsfDpW-9_TDINb3PGDr-uXvKa5IBtb04WJjc_rgvPUKM1oanxgAzVyf0yM74CQr_KbJb-XG9loAU59KWDF7DaJDcin6RRN0CliGhGXak-7xwx7p-aSH4Ko32qCRjjmZnkzFXYmy3ftFVeqG3wsTwLz68ZYUK0cnpgtyA9F_PA2xGS4k6GYniJz9qDjm1Su7ngoaIUOf_7gIKmP-qo-m0r4og3UePqZlF1tuATO4uFJV6YgBABVE9RMxvKV3biH3noMgxdtmmDy02MBb0-OwgRCYeidy2pFNqI3XRmlQ5d7BriQ6CzuESApxHNG8C-NT9AHHrYcGKldxKz5hdliohT44kAJydjY8BkwrVFFjZOJPtI5vnQOLsupGq_wfUyuIXY75PU2-Sh1DNTmAvPZd1RTG56VjKOaWn9r49Mjip965o0HhDkwncvcKb7uRZI3ZI9QNIU_g85uiHVii2AQpFVxJDNbADqTNf5StpcqjX2BFPmJ9jN5mGb4YeVpOZPkC2lZHubC99PxT8uNT-0T1nW8o3dC6nQX_6G0E9I';
+const AT='pat5E0j0M20yO8uHd.9e053bb673d08d265de5f410f6ed07102a52604c587f10099d16aeae4a003cac';
+const BASE='appvJnzFemyD1CtbH';
+const UB=`https://api.airtable.com/v0/${BASE}`;
+const H={'Authorization':`Bearer ${AT}`,'Content-Type':'application/json'};
+let pRecs=[],selId=null,processing=new Set(),selPermit=null;
+const today=new Date();
+document.getElementById('ddate').textContent=today.toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short',year:'numeric'});
 
-const AIRTABLE_BASE = `https://api.airtable.com/v0/${BASE_ID}`;
-const HEADERS = { 'Authorization': `Bearer ${AIRTABLE_TOKEN}`, 'Content-Type': 'application/json' };
+async function atF(t,p=''){const r=await fetch(`${UB}/${encodeURIComponent(t)}?${p}`,{headers:H});const d=await r.json();if(d.error)throw new Error(d.error.message);return d;}
+async function atP(t,id,f){const r=await fetch(`${UB}/${encodeURIComponent(t)}/${id}`,{method:'PATCH',headers:H,body:JSON.stringify({fields:f})});return r.json();}
+async function loadAll(s=false){try{await Promise.all([loadL(s),loadP(s)]);}catch(e){}}
 
-let pendingRecords = [];
-let pipelineRecords = [];
-let ownerDbRecords = [];
-let selectedFile = null;
-
-const today = new Date();
-document.getElementById('date-display').textContent = today.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
-
-async function airtableFetch(table, params = '') {
-  const res = await fetch(`${AIRTABLE_BASE}/${encodeURIComponent(table)}?${params}`, { headers: HEADERS });
-  const data = await res.json();
-  if (data.error) throw new Error(data.error.message);
-  return data;
-}
-
-async function loadAll() {
-  try {
-    await Promise.all([loadListings(), loadPipeline(), loadOwnerSelect()]);
-  } catch(e) {
-    console.error(e);
-  }
-}
-
-async function loadListings() {
-  try {
-    const todayStr = today.toISOString().split('T')[0];
-    const data = await airtableFetch('PENDING', `filterByFormula=IS_AFTER({TIMESTAMP}, "${todayStr}")&sort[0][field]=TIMESTAMP&sort[0][direction]=desc&maxRecords=20`);
-    pendingRecords = data.records || [];
-    
-    document.getElementById('listings-count').textContent = `${pendingRecords.length} today`;
-    document.getElementById('stat-new').textContent = pendingRecords.length;
-    
-    const container = document.getElementById('listings-container');
-    if (pendingRecords.length === 0) {
-      container.innerHTML = '<div class="empty-state">No new listings yet today. Check back after 9am.</div>';
-      return;
-    }
-    container.innerHTML = pendingRecords.map(r => {
-      const permit = r.fields['DLD PERMIT NUMBER'] || 'No permit';
-      const source = r.fields['SOURCE'] || 'Bayut';
-      const url = r.fields['LISTING URL'] || '';
-      return `
-        <div class="listing-row">
-          <div>
-            <div class="permit-code">${permit}</div>
-            <div class="permit-meta">${source} · Added today</div>
-          </div>
-          <div style="display:flex;align-items:center;gap:8px">
-            ${url ? `<a href="${url}" target="_blank" style="font-size:11px;color:var(--text3);text-decoration:none;border:0.5px solid var(--border);padding:3px 8px;border-radius:4px;">View ↗</a>` : ''}
-            <span class="badge badge-new">New</span>
-            <button class="use-btn" onclick="usePermit('${permit}')">Use this</button>
-          </div>
-        </div>`;
-    }).join('');
-  } catch(e) {
-    document.getElementById('listings-container').innerHTML = '<div class="empty-state">Could not load listings. Check API token.</div>';
-  }
-}
-
-async function loadPipeline() {
-  try {
-    const data = await airtableFetch('PIPELINE', 'sort[0][field]=NEXT ACTION DATE&sort[0][direction]=asc&maxRecords=50');
-    pipelineRecords = data.records || [];
-    
-    document.getElementById('pipeline-count').textContent = `${pipelineRecords.length} total`;
-    document.getElementById('stat-pipeline').textContent = pipelineRecords.length;
-    
-    const hot = pipelineRecords.filter(r => r.fields['STAGE'] === 'HOT').length;
-    document.getElementById('stat-hot').textContent = hot;
-    
-    const todayStr = today.toISOString().split('T')[0];
-    const followups = pipelineRecords.filter(r => {
-      const d = r.fields['NEXT ACTION DATE'];
-      return d && d <= todayStr;
-    }).length;
-    document.getElementById('stat-followup').textContent = followups;
-
-    const select = document.getElementById('owner-select');
-    const currentVal = select.value;
-    select.innerHTML = '<option value="">Select owner...</option>' + pipelineRecords.map(r => {
-      const name = r.fields['OWNER NAME'] || r.fields['Name'] || 'Unknown';
-      const unit = r.fields['UNIT NUMBER'] || '';
-      return `<option value="${name}">${name}${unit ? ' — ' + unit : ''}</option>`;
-    }).join('');
-    if (currentVal) select.value = currentVal;
-
-    const container = document.getElementById('pipeline-container');
-    if (pipelineRecords.length === 0) {
-      container.innerHTML = '<div class="empty-state">No pipeline records yet. Look up an owner and create one.</div>';
-      return;
-    }
-    container.innerHTML = pipelineRecords.map(r => {
-      const name = r.fields['OWNER NAME'] || 'Unknown';
-      const stage = (r.fields['STAGE'] || 'WARM').toUpperCase();
-      const notes = r.fields['CALL NOTES'] || r.fields['NEXT ACTION'] || 'No notes yet';
-      const nextDate = r.fields['NEXT ACTION DATE'] || '';
-      const initials = name.split(' ').map(w => w[0]).join('').slice(0,2).toUpperCase();
-      const stageClass = stage === 'HOT' ? 'stage-hot' : stage === 'COLD' ? 'stage-cold' : 'stage-warm';
-      const avatarStyle = stage === 'HOT' ? 'background:var(--hot-bg);color:var(--hot)' : stage === 'COLD' ? 'background:var(--cold-bg);color:var(--cold)' : 'background:var(--warm-bg);color:var(--warm)';
-      return `
-        <div class="pipeline-row">
-          <div class="p-avatar" style="${avatarStyle}">${initials}</div>
-          <div class="p-info">
-            <div class="p-name">${name}</div>
-            <div class="p-notes">${notes.substring(0,80)}${notes.length > 80 ? '...' : ''}</div>
-          </div>
-          <div class="p-right">
-            <span class="stage-badge ${stageClass}">${stage}</span>
-            ${nextDate ? `<span class="followup-date">${nextDate}</span>` : ''}
-          </div>
-        </div>`;
-    }).join('');
-  } catch(e) {
-    document.getElementById('pipeline-container').innerHTML = '<div class="empty-state">Could not load pipeline. Check API token.</div>';
-  }
-}
-
-async function loadOwnerSelect() {
-  // pipeline load handles the select population
-}
-
-function usePermit(permit) {
-  document.getElementById('unit-input').focus();
-  document.getElementById('unit-input').placeholder = `Got permit ${permit} — enter unit number`;
-}
-
-async function lookupOwner() {
-  const unit = document.getElementById('unit-input').value.trim().toUpperCase();
-  if (!unit) return;
-  
-  const resultDiv = document.getElementById('owner-result');
-  resultDiv.innerHTML = '<div class="loading-state" style="padding:1rem 0"><span class="spinner"></span>Searching owner database...</div>';
-  
-  try {
-    const data = await airtableFetch('OWNER DATABASE', `filterByFormula=UPPER({NUMBER})="${unit}"&maxRecords=1`);
-    
-    if (!data.records || data.records.length === 0) {
-      resultDiv.innerHTML = `<div class="error-msg" style="margin:12px 0 0">No owner found for unit ${unit}. Check the unit number.</div>`;
-      return;
-    }
-    
-    const r = data.records[0];
-    const f = r.fields;
-    const name = f['OWNER NAME'] || 'Unknown';
-    const mobile = f['MOBILE'] || '—';
-    const cluster = f['VILLA NUMBER'] || '—';
-    const permit = f['DLD PERMIT NUMBER'] || f['PERMIT NUMBER'] || '—';
-    const phase = f['PHASE'] || '';
-    const prefix = f['PREFIX'] || '';
-    const initials = name.split(' ').map(w => w[0]).join('').slice(0,2).toUpperCase();
-    
-    resultDiv.innerHTML = `
-      <div class="owner-result">
-        <div class="owner-head">
-          <div class="avatar">${initials}</div>
-          <div>
-            <div class="owner-name-text">${name}</div>
-            <div class="owner-unit-text">Unit ${unit} · ${cluster}</div>
-          </div>
+async function loadL(s=false){
+  try{
+    const ts=today.toISOString().split('T')[0];
+    const d=await atF('PENDING',`filterByFormula=IS_AFTER({TIMESTAMP},"${ts}")&sort[0][field]=TIMESTAMP&sort[0][direction]=desc&maxRecords=50`);
+    const recs=d.records||[];
+    document.getElementById('lcount').textContent=recs.length+' today';
+    document.getElementById('s-new').textContent=recs.length;
+    const c=document.getElementById('lcon');
+    if(!recs.length){c.innerHTML='<div class="empty">No new listings today.<br>Check back after 9am.</div>';return;}
+    c.innerHTML=recs.map(r=>{
+      const p=r.fields['DLD PERMIT NUMBER']||'—';
+      const url=r.fields['LISTING URL']||'';
+      const sel=selPermit===p;
+      return `<div class="li ${sel?'sel':''}">
+        <div class="lip">${p}</div>
+        <div class="lim">Bayut · Today</div>
+        <div class="libtns">
+          ${url?`<a href="${url}" target="_blank" class="xb">View ↗</a>`:''}
+          <button class="xb" onclick="doCopy('${p}',this)">Copy</button>
+          <button class="xb xbg ${sel?'on':''}" onclick="doUse('${p}')">${sel?'✓ Selected':'Use'}</button>
         </div>
-        <div class="owner-fields">
-          <div><div class="field-label">Mobile</div><div class="field-val">${mobile}</div></div>
-          <div><div class="field-label">Community</div><div class="field-val">${cluster}</div></div>
-          <div><div class="field-label">Phase</div><div class="field-val">${phase}${prefix}</div></div>
-          <div><div class="field-label">Stage</div><div class="field-val">WARM</div></div>
-        </div>
-        <button class="create-btn" onclick="createPipelineRecord('${name}','${unit}','${mobile}','${cluster}','${permit}')" id="create-btn">
-          ✓ Create pipeline record
-        </button>
-        <div id="create-status"></div>
       </div>`;
-  } catch(e) {
-    resultDiv.innerHTML = `<div class="error-msg" style="margin:12px 0 0">Error: ${e.message}</div>`;
-  }
+    }).join('');
+  }catch(e){document.getElementById('lcon').innerHTML='<div class="empty">Could not load listings.</div>';}
 }
 
-async function createPipelineRecord(name, unit, mobile, cluster, permit) {
-  const btn = document.getElementById('create-btn');
-  const status = document.getElementById('create-status');
-  btn.disabled = true;
-  btn.textContent = 'Creating...';
+async function loadP(s=false){
+  try{
+    const d=await atF('PIPELINE','sort[0][field]=NEXT ACTION DATE&sort[0][direction]=asc&maxRecords=100');
+    pRecs=d.records||[];
+    document.getElementById('pcount').textContent=pRecs.length+' total';
+    document.getElementById('s-pipe').textContent=pRecs.length;
+    document.getElementById('s-hot').textContent=pRecs.filter(r=>r.fields['STAGE']==='HOT').length;
+    const ts=today.toISOString().split('T')[0];
+    document.getElementById('s-follow').textContent=pRecs.filter(r=>{const dd=r.fields['NEXT ACTION DATE'];return dd&&dd<=ts;}).length;
+    renderP();
+    if(selId){const r=pRecs.find(r=>r.id===selId);if(r)showD(r);}
+  }catch(e){document.getElementById('pcon').innerHTML='<div class="empty">Could not load pipeline.</div>';}
+}
+
+function renderP(){
+  const c=document.getElementById('pcon');
+  if(!pRecs.length){c.innerHTML='<div class="empty">No pipeline records yet.<br>Look up a unit to create one.</div>';return;}
+  c.innerHTML=pRecs.map(r=>{
+    const id=r.id,f=r.fields;
+    const name=f['OWNER NAME']||'Unknown';
+    const stage=(f['STAGE']||'WARM').toUpperCase();
+    const unit=f['UNIT NUMBER']||'';
+    const nd=f['NEXT ACTION DATE']||'';
+    const cc=f['CALL COUNT']||0;
+    const ini=name.split(' ').filter(Boolean).map(w=>w[0]).join('').slice(0,2).toUpperCase();
+    const sc=stage==='HOT'?'sh':stage==='COLD'?'sc':'sw';
+    const avB=stage==='HOT'?'var(--hotd)':stage==='COLD'?'var(--coldd)':'var(--warmd)';
+    const avC=stage==='HOT'?'var(--hot)':stage==='COLD'?'var(--cold)':'var(--warm)';
+    const proc=processing.has(name);
+    const on=selId===id;
+    const sub=proc?'':(f['NEXT ACTION']?f['NEXT ACTION'].substring(0,55)+(f['NEXT ACTION'].length>55?'...':''):(nd?'Follow up '+nd:'No notes yet'));
+    return `<div class="prw"><div class="prr ${on?'on':''}" onclick="selPipe('${id}')">
+      <div class="prav" style="background:${avB};color:${avC}">${ini}</div>
+      <div class="prin">
+        <div class="prn">${name}<span class="pru">${unit}</span></div>
+        <div class="prs">${proc?`<span style="color:var(--warm)"><span class="spin spw"></span>Analysing...</span>`:sub}</div>
+      </div>
+      <div class="prrt">
+        <span class="stg ${sc}">${stage}</span>
+        ${nd?`<span class="prd">${nd}</span>`:''}
+        ${cc?`<span style="font-size:10px;color:var(--t3)">${cc}×</span>`:''}
+      </div>
+    </div></div>`;
+  }).join('');
+}
+
+function selPipe(id){selId=id;const r=pRecs.find(r=>r.id===id);if(r){showD(r);renderP();}}
+
+function showD(r){
+  const f=r.fields,id=r.id;
+  const name=f['OWNER NAME']||'Unknown',stage=f['STAGE']||'WARM',notes=f['CALL NOTES']||'';
+  const na=f['NEXT ACTION']||'',nd=f['NEXT ACTION DATE']||'',mobile=f['MOBILE']||'—';
+  const unit=f['UNIT NUMBER']||'—',cluster=f['CLUSTER']||'—',permit=f['DLD PERMIT NUMBER']||'—';
+  const lc=f['LAST CONTACT DATE']||'—',cc=f['CALL COUNT']||0;
+  const ep=f['ESTIMATED SALES PRICE']||'',ce=f['COMMISSIONS ESTIMATE']||'',fa=f['FORM A SIGNED']||false;
+  const sc=stage==='HOT'?'var(--hot)':stage==='COLD'?'var(--cold)':'var(--warm)';
+  const sb=stage==='HOT'?'var(--hotd)':stage==='COLD'?'var(--coldd)':'var(--warmd)';
+  let obj=[],sig=[];
+  try{obj=JSON.parse(f['KEY OBJECTIONS']||'[]');}catch(e){if(f['KEY OBJECTIONS'])obj=[f['KEY OBJECTIONS']];}
+  try{sig=JSON.parse(f['POSITIVE SIGNALS']||'[]');}catch(e){if(f['POSITIVE SIGNALS'])sig=[f['POSITIVE SIGNALS']];}
+  const ini=name.split(' ').filter(Boolean).map(w=>w[0]).join('').slice(0,2).toUpperCase();
+  const ne=name.replace(/'/g,"\\'");
+  document.getElementById('dtitle').textContent=name;
+  document.getElementById('dcontent').innerHTML=`<div class="dscroll">
+    <div class="dhead">
+      <div class="dav" style="background:${sb};color:${sc}">${ini}</div>
+      <div><div class="dname">${name}</div><div class="dsub">Unit ${unit} · ${cluster}</div></div>
+    </div>
+    <div class="dgrid">
+      <div><div class="dgl">Mobile</div><div class="dgv">${mobile}</div></div>
+      <div><div class="dgl">Stage</div><div class="dgv" style="color:${sc}">${stage}</div></div>
+      <div><div class="dgl">DLD Permit</div><div class="dgv">${permit}</div></div>
+      <div><div class="dgl">Last contact</div><div class="dgv">${lc}</div></div>
+      <div><div class="dgl">Calls made</div><div class="dgv">${cc}</div></div>
+      ${ep?`<div><div class="dgl">Est. price</div><div class="dgv">AED ${Number(ep).toLocaleString()}</div></div>`:''}
+      ${ce?`<div><div class="dgl">Commission</div><div class="dgv">AED ${Number(ce).toLocaleString()}</div></div>`:''}
+      ${fa?`<div><div class="dgl">Form A</div><div class="dgv" style="color:var(--g)">✓ Signed</div></div>`:''}
+    </div>
+    ${notes?`<div class="dsec"><div class="dsl">Call notes</div><div class="dnotes">${notes}</div></div>`:''}
+    ${obj.length?`<div class="dsec"><div class="dsl">Objections</div><div class="tags">${obj.map(o=>`<span class="to">${o}</span>`).join('')}</div></div>`:''}
+    ${sig.length?`<div class="dsec"><div class="dsl">Positive signals</div><div class="tags">${sig.map(s=>`<span class="ts">${s}</span>`).join('')}</div></div>`:''}
+    ${na||nd?`<div class="nbox"><div class="nl">Next action</div>${na?`<div class="nt">${na}</div>`:''}${nd?`<div class="nd">Follow up: ${nd}</div>`:''}</div>`:''}
+    <div class="esec">
+      <div class="dsl" style="margin-bottom:10px">Edit record</div>
+      <div class="egrid">
+        <div class="ef"><label>Stage</label><select id="es-${id}"><option ${stage==='COLD'?'selected':''}>COLD</option><option ${stage==='WARM'?'selected':''}>WARM</option><option ${stage==='HOT'?'selected':''}>HOT</option><option ${stage==='VISIT SCHEDULED'?'selected':''}>VISIT SCHEDULED</option><option ${stage==='VISIT DONE'?'selected':''}>VISIT DONE</option><option ${stage==='FORM A SENT'?'selected':''}>FORM A SENT</option><option ${stage==='FORM A SIGNED'?'selected':''}>FORM A SIGNED</option><option ${stage==='LISTED'?'selected':''}>LISTED</option><option ${stage==='OFFER RECEIVED'?'selected':''}>OFFER RECEIVED</option><option ${stage==='DEAL CLOSED'?'selected':''}>DEAL CLOSED</option></select></div>
+        <div class="ef"><label>Follow up date</label><input type="date" id="ed-${id}" value="${nd}"/></div>
+        <div class="ef"><label>Est. price (AED)</label><input type="number" id="ep-${id}" value="${ep}" placeholder="4200000"/></div>
+        <div class="ef"><label>Next action</label><input type="text" id="ea-${id}" value="${na.replace(/"/g,'&quot;')}" placeholder="What to do next"/></div>
+        <div class="ef fw"><label>Call notes</label><textarea id="en-${id}">${notes}</textarea></div>
+      </div>
   
-  try {
-    const existing = await airtableFetch('PIPELINE', `filterByFormula={OWNER NAME}="${name}"&maxRecords=1`);
-    if (existing.records && existing.records.length > 0) {
-      status.innerHTML = `<div class="error-msg">Pipeline record already exists for ${name}.</div>`;
-      btn.textContent = 'Already exists';
+      <button class="bsave" onclick="saveR('${id}')">Save changes</button>
+      <div id="ss-${id}"></div>
+    </div>
+  </div>`;
+}
+
+async function saveR(id){
+  const btn=document.querySelector(`#ss-${id}`).previousElementSibling;
+  const st=document.getElementById(`ss-${id}`);
+  btn.disabled=true;btn.textContent='Saving...';
+  try{
+    const fields={'STAGE':document.getElementById(`es-${id}`).value};
+    const nd=document.getElementById(`ed-${id}`).value;if(nd)fields['NEXT ACTION DATE']=nd;
+    const na=document.getElementById(`ea-${id}`).value;if(na)fields['NEXT ACTION']=na;
+    const cn=document.getElementById(`en-${id}`).value;if(cn)fields['CALL NOTES']=cn;
+    const price=document.getElementById(`ep-${id}`).value;if(price)fields['ESTIMATED SALES PRICE']=parseFloat(price);
+    await atP('PIPELINE',id,fields);
+    st.innerHTML='<div class="ok">✓ Saved</div>';btn.textContent='✓ Saved';
+    setTimeout(()=>loadP(true),2000);
+  }catch(e){st.innerHTML=`<div class="er">${e.message}</div>`;btn.disabled=false;btn.textContent='Save changes';}
+}
+
+function doCopy(p,btn){navigator.clipboard.writeText(p);btn.textContent='✓ Copied';setTimeout(()=>btn.textContent='Copy',1500);}
+
+function doUse(p){
+  selPermit=p;
+  document.getElementById('pchip').textContent=p;
+  document.getElementById('pchip').style.display='inline-block';
+  document.getElementById('unit-in').value='';
+  document.getElementById('unit-in').placeholder='Permit saved — enter unit number';
+  document.getElementById('unit-in').focus();
+  loadL(true);
+}
+
+async function doLookup(){
+  const unit=document.getElementById('unit-in').value.trim().toUpperCase();
+  if(!unit)return;
+  document.getElementById('dtitle').textContent='Searching...';
+  document.getElementById('dcontent').innerHTML='<div class="loading" style="margin-top:3rem"><span class="spin"></span>Searching owner database...</div>';
+  try{
+    const d=await atF('OWNER DATABASE',`filterByFormula=UPPER({NUMBER})="${unit}"&maxRecords=1`);
+    if(!d.records||!d.records.length){
+      document.getElementById('dtitle').textContent='Not found';
+      document.getElementById('dcontent').innerHTML='<div class="er" style="margin:14px">No owner found for unit '+unit+'.</div>';
       return;
     }
-    
-    const body = {
-      fields: {
-        'OWNER NAME': name,
-        'UNIT NUMBER': unit,
-        'MOBILE': mobile,
-        'CLUSTER': cluster,
-        'DLD PERMIT NUMBER': permit,
-        'STAGE': 'WARM'
-      }
-    };
-    
-    const res = await fetch(`${AIRTABLE_BASE}/PIPELINE`, {
-      method: 'POST',
-      headers: HEADERS,
-      body: JSON.stringify(body)
-    });
-    const data = await res.json();
-    if (data.error) throw new Error(data.error.message);
-    
-    status.innerHTML = `<div class="success-msg">✓ Pipeline record created for ${name}</div>`;
-    btn.textContent = '✓ Created';
-    await loadPipeline();
-  } catch(e) {
-    status.innerHTML = `<div class="error-msg">Error: ${e.message}</div>`;
-    btn.disabled = false;
-    btn.textContent = '✓ Create pipeline record';
-  }
+    const f=d.records[0].fields;
+    const name=f['OWNER NAME']||'Unknown',mobile=f['MOBILE']||'—',cluster=f['VILLA NUMBER']||'—';
+    const permit=selPermit||f['DLD PERMIT NUMBER']||'—';
+    const phase=f['PHASE']||'',prefix=f['PREFIX']||'';
+    const ini=name.split(' ').filter(Boolean).map(w=>w[0]).join('').slice(0,2).toUpperCase();
+    const ne=name.replace(/'/g,"\\'");
+    document.getElementById('dtitle').textContent='Owner found';
+    document.getElementById('dcontent').innerHTML=`
+      <div class="lrc" style="margin:14px">
+        <div class="lrh">
+          <div class="lrav">${ini}</div>
+          <div><div class="lrn">${name}</div><div class="lru">Unit ${unit} · ${cluster}</div></div>
+        </div>
+        <div class="lrfs">
+          <div><div class="lrfl">Mobile</div><div class="lrfv">${mobile}</div></div>
+          <div><div class="lrfl">Community</div><div class="lrfv">${cluster}</div></div>
+          <div><div class="lrfl">Phase / Prefix</div><div class="lrfv">${phase}${prefix}</div></div>
+          <div><div class="lrfl">DLD Permit</div><div class="lrfv ${selPermit?'g':''}">${permit}${selPermit?' ✓':''}</div></div>
+        </div>
+        <div class="lra">
+          <button class="bcreate" onclick="doCreate('${ne}','${unit}','${mobile}','${cluster}','${permit}')" id="cbtn">✓ Create pipeline record</button>
+          <div id="cst"></div>
+        </div>
+      </div>`;
+  }catch(e){document.getElementById('dcontent').innerHTML=`<div class="er" style="margin:14px">${e.message}</div>`;}
 }
 
-function handleFileSelect(input) {
-  const file = input.files[0];
-  if (!file) return;
-  selectedFile = file;
-  document.getElementById('filename-display').textContent = file.name;
-  document.getElementById('upload-btn').disabled = !document.getElementById('owner-select').value;
-}
-
-document.getElementById('owner-select').addEventListener('change', function() {
-  document.getElementById('upload-btn').disabled = !this.value || !selectedFile;
-});
-
-async function uploadRecording() {
-  if (!selectedFile) return;
-  const ownerName = document.getElementById('owner-select').value;
-  if (!ownerName) return;
-  
-  const btn = document.getElementById('upload-btn');
-  const status = document.getElementById('upload-status');
-  btn.disabled = true;
-  btn.innerHTML = '<span class="spinner"></span>Uploading...';
-  
-  try {
-    const ext = selectedFile.name.split('.').pop();
-    const newFilename = `${ownerName}.${ext}`;
-    const dropboxPath = `/call recordings/${newFilename}`;
-    
-    const res = await fetch('https://content.dropboxapi.com/2/files/upload', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${DROPBOX_TOKEN}`,
-        'Dropbox-API-Arg': JSON.stringify({ path: dropboxPath, mode: 'overwrite', autorename: false }),
-        'Content-Type': 'application/octet-stream'
-      },
-      body: selectedFile
-    });
-    
-    const data = await res.json();
-    if (data.error_summary) throw new Error(data.error_summary);
-    
-    status.innerHTML = `<div class="success-msg" style="margin-top:8px">✓ Uploaded as "${newFilename}" — transcription triggered automatically</div>`;
-    btn.textContent = '✓ Uploaded';
-    selectedFile = null;
-    document.getElementById('filename-display').textContent = '';
-    document.getElementById('file-input').value = '';
-  } catch(e) {
-    status.innerHTML = `<div class="error-msg" style="margin-top:8px">Upload failed: ${e.message}</div>`;
-    btn.disabled = false;
-    btn.textContent = 'Upload → triggers transcription';
-  }
+async function doCreate(name,unit,mobile,cluster,permit){
+  const btn=document.getElementById('cbtn'),st=document.getElementById('cst');
+  btn.disabled=true;btn.textContent='Creating...';
+  try{
+    const ex=await atF('PIPELINE',`filterByFormula={OWNER NAME}="${name}"&maxRecords=1`);
+    if(ex.records&&ex.records.length){st.innerHTML='<div class="er">Already in pipeline.</div>';btn.textContent='Already exists';return;}
+    const res=await fetch(`${UB}/PIPELINE`,{method:'POST',headers:H,body:JSON.stringify({fields:{'OWNER NAME':name,'UNIT NUMBER':unit,'MOBILE':mobile,'CLUSTER':cluster,'DLD PERMIT NUMBER':permit,'STAGE':'WARM'}})});
+    const data=await res.json();if(data.error)throw new Error(data.error.message);
+    st.innerHTML='<div class="ok">✓ '+name+' added to pipeline</div>';btn.textContent='✓ Created';
+    selPermit=null;
+    document.getElementById('pchip').style.display='none';
+    document.getElementById('unit-in').value='';
+    document.getElementById('unit-in').placeholder='Enter unit number e.g. J112';
+    await loadP(true);
+  }catch(e){st.innerHTML=`<div class="er">${e.message}</div>`;btn.disabled=false;btn.textContent='✓ Create pipeline record';}
 }
 
 loadAll();
-setInterval(loadAll, 60000);
+setInterval(()=>loadAll(true),30000);
 </script>
 </body>
 </html>
