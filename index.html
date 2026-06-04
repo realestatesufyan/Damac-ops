@@ -230,7 +230,7 @@ async function atP(t,id,f){const r=await fetch(`${UB}/${encodeURIComponent(t)}/$
 async function loadAll(s=false){try{await Promise.all([loadL(s),loadP(s)]);}catch(e){}}
 async function loadL(s=false){
   try{
-    const d=await atF('PENDING',`filterByFormula=IS_AFTER({TIMESTAMP},"${todayStr}")&sort[0][field]=TIMESTAMP&sort[0][direction]=desc&maxRecords=50`);
+    const d=await atF('PENDING',`view=New%20Listing&sort[0][field]=TIMESTAMP&sort[0][direction]=desc&maxRecords=50`);
     const recs=d.records||[];
     document.getElementById('lcount').textContent=recs.length+' today';
     document.getElementById('s-new').textContent=recs.length;
@@ -496,12 +496,17 @@ async function doCreate(name,unit,mobile,cluster,permit){
     if(ex.records&&ex.records.length){st.innerHTML='<div class="er">Already in pipeline.</div>';btn.textContent='Already exists';return;}
     const res=await fetch(`${UB}/PIPELINE`,{method:'POST',headers:H,body:JSON.stringify({fields:{'OWNER NAME':name,'UNIT NUMBER':unit,'MOBILE':mobile,'CLUSTER':cluster,'DLD PERMIT NUMBER':permit,'STAGE':'WARM'}})});
     const data=await res.json();if(data.error)throw new Error(data.error.message);
+    // Remove from Pending so it disappears from New Listings
+    const ps=await atF('PENDING',`filterByFormula={DLD PERMIT NUMBER}="${permit}"&maxRecords=1`);
+    if(ps.records&&ps.records.length){
+      await fetch(`${UB}/PENDING/${ps.records[0].id}`,{method:'DELETE',headers:H});
+    }
     st.innerHTML='<div class="ok">✓ '+name+' added to pipeline</div>';btn.textContent='✓ Created';
     selPermit=null;
     document.getElementById('pchip').style.display='none';
     document.getElementById('unit-in').value='';
     document.getElementById('unit-in').placeholder='Enter unit number e.g. J112';
-    setTimeout(()=>loadP(true),1000);
+    setTimeout(()=>loadAll(true),1000);
   }catch(e){st.innerHTML=`<div class="er">${e.message}</div>`;btn.disabled=false;btn.textContent='✓ Create pipeline record';}
 }
 loadAll();
